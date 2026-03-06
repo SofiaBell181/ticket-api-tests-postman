@@ -1,0 +1,2 @@
+title,description,due_date,submitter_email,queue,status,resolution,priority,new_title,new_description,new_due_date,new_queue
+Created test ticket 1,Used CSV for Data-Driven Requests,2026-03-05,sofyabel_qa@gmail.com,1,1,null,1,Updated test ticket 1,Used second row in CSV,2026-03-07,2
