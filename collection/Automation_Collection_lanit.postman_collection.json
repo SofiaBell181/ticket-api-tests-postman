@@ -1,0 +1,554 @@
+{
+  "info": {
+    "_postman_id": "c2891baa-c535-4039-8f00-ccc8afcb40a6",
+    "name": "Automation_Collection_lanit",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "26350264",
+    "_collection_link": "https://go.postman.co/collection/26350264-c2891baa-c535-4039-8f00-ccc8afcb40a6?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Get token",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "const dataResponse = pm.response.json();\r",
+              "const token = dataResponse.token;\r",
+              "\r",
+              "pm.globals.set(\"session_token\",token);\r",
+              "\r",
+              "pm.test(\"Body is correct\", function () {\r",
+              "    pm.response.to.have.body({\r",
+              "    \"token\": pm.globals.get(\"session_token\") \r",
+              "    });\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "username",
+              "value": "{{login}}",
+              "type": "text",
+              "uuid": "d4c3462d-397e-463a-a341-250a4e9eaf8e"
+            },
+            {
+              "key": "password",
+              "value": "{{password}}",
+              "type": "text",
+              "uuid": "f6bcd2fb-2c05-4603-b404-db1ab5a26cb8"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/api/login",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get all tickets",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/tickets",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "tickets"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create a ticket",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const dataResponse = pm.response.json();\r",
+              "\r",
+              "pm.globals.set(\"id_ticket\", dataResponse.id);\r",
+              "\r",
+              "pm.test(\"Status code is 201\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Check field title value\", function () {\r",
+              "    pm.expect(dataResponse.title).to.equal(pm.iterationData.get(\"title\"))\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Check field description value\", function () {\r",
+              "    pm.expect(dataResponse.description).to.equal(pm.iterationData.get(\"description\"))\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Check field due_date value\", function () {\r",
+              "    pm.expect(dataResponse.due_date).to.equal(pm.iterationData.get(\"due_date\"))\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Check field submitter_email value\", function () {\r",
+              "    pm.expect(dataResponse.submitter_email).to.equal(pm.iterationData.get(\"submitter_email\"))\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Check field queue value\", function () {\r",
+              "    pm.expect(dataResponse.queue).to.equal(pm.iterationData.get(\"queue\"))\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Check field status value\", function () {\r",
+              "    pm.expect(dataResponse.status).to.equal(pm.iterationData.get(\"status\"))\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Check field resolution value\", function () {\r",
+              "    pm.expect(dataResponse.resolution).to.equal(pm.iterationData.get(\"resolution\"))\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Check field priority value\", function () {\r",
+              "    pm.expect(dataResponse.priority).to.equal(pm.iterationData.get(\"priority\"))\r",
+              "});\t\t\t\t\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"title\": \"{{title}}\",\r\n    \"description\": \"{{description}}\",\r\n    \"due_date\": \"{{due_date}}\",\r\n    \"submitter_email\": \"{{submitter_email}}\",\r\n    \"queue\": \"{{queue}}\",\r\n    \"status\": \"{{status}}\",\r\n    \"resolution\": \"{{resolution}}\",\r\n    \"priority\": \"{{priority}}\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/tickets",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "tickets"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get created ticket info",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "const dataResponse = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Check field title value\", function () {\r",
+              "    pm.expect(dataResponse.title).to.equal(pm.iterationData.get(\"title\"))\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Check field description value\", function () {\r",
+              "    pm.expect(dataResponse.description).to.equal(pm.iterationData.get(\"description\"))\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Check field due_date value\", function () {\r",
+              "    pm.expect(dataResponse.due_date).to.equal(pm.iterationData.get(\"due_date\")+\"T00:00:00\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Check field submitter_email value\", function () {\r",
+              "    pm.expect(dataResponse.submitter_email).to.equal(pm.iterationData.get(\"submitter_email\"))\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Check field queue value\", function () {\r",
+              "    pm.expect(dataResponse.queue).to.equal(pm.iterationData.get(\"queue\"))\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Check field status value\", function () {\r",
+              "    pm.expect(dataResponse.status).to.equal(pm.iterationData.get(\"status\"))\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Check field resolution value\", function () {\r",
+              "    pm.expect(dataResponse.resolution).to.equal(pm.iterationData.get(\"resolution\"))\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Check field priority value\", function () {\r",
+              "    pm.expect(dataResponse.priority).to.equal(pm.iterationData.get(\"priority\"))\r",
+              "});\t\t\t\t\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "const options = {\r",
+              "        'method': 'POST',\r",
+              "        'url': 'https://ft-sandbox.workbench.lanit.ru/api/tickets',\r",
+              "        'header': {\r",
+              "            'Content-Type': 'application/json'\r",
+              "        },\r",
+              "        body: JSON.stringify({\r",
+              "            \"title\": \"title new tickets\",\r",
+              "            \"description\": \"new description\",\r",
+              "            \"queue\":  1,\r",
+              "        })\r",
+              "    };\r",
+              "    \r",
+              "try {\r",
+              "    const response = await pm.sendRequest(options);\r",
+              "    const dataSet = response.json();\r",
+              "        pm.collectionVariables.set('titleTicket', dataSet.title);\r",
+              "        pm.collectionVariables.set('idTicket', dataSet.id);\r",
+              "        pm.collectionVariables.set('descriptionTicket', dataSet.description);\r",
+              "        console.log(dataSet);\r",
+              "} catch (err) {\r",
+              "    console.error(err);\r",
+              "}"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Token {{session_token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/tickets/{{id_ticket}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "tickets",
+            "{{id_ticket}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update a ticket",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "const dataResponse = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Check field title value\", function () {\r",
+              "    pm.expect(dataResponse.title).to.equal(pm.iterationData.get(\"new_title\"))\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Check field new_description value\", function () {\r",
+              "    pm.expect(dataResponse.description).to.equal(pm.iterationData.get(\"new_description\"))\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Check field due_date value\", function () {\r",
+              "    pm.expect(dataResponse.due_date).to.equal(pm.iterationData.get(\"new_due_date\"))\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Check field new_queue value\", function () {\r",
+              "    pm.expect(dataResponse.queue).to.equal(pm.iterationData.get(\"new_queue\"))\r",
+              "})"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Token {{session_token}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"title\": \"{{new_title}}\",\r\n    \"description\": \"{{new_description}}\",\r\n    \"due_date\": \"{{new_due_date}}\",\r\n    \"queue\": \"{{new_queue}}\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/tickets/{{id_ticket}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "tickets",
+            "{{id_ticket}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get updated ticket info",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "const dataResponse = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Check field title value\", function () {\r",
+              "    pm.expect(dataResponse.title).to.equal(pm.iterationData.get(\"new_title\"))\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Check field description value\", function () {\r",
+              "    pm.expect(dataResponse.description).to.equal(pm.iterationData.get(\"new_description\"))\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Check field due_date value\", function () {\r",
+              "    pm.expect(dataResponse.due_date).to.equal(pm.iterationData.get(\"new_due_date\") + \"T00:00:00\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Check field new_queue\", function () {\r",
+              "    pm.expect(dataResponse.queue).to.equal(pm.iterationData.get(\"new_queue\"))\r",
+              "})\r",
+              "\r",
+              "pm.test(\"Check field submitter_email value\", function () {\r",
+              "    pm.expect(dataResponse.submitter_email).to.equal(pm.iterationData.get(\"submitter_email\"))\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Check field status value\", function () {\r",
+              "    pm.expect(dataResponse.status).to.equal(pm.iterationData.get(\"status\"))\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Check field resolution value\", function () {\r",
+              "    pm.expect(dataResponse.resolution).to.equal(pm.iterationData.get(\"resolution\"))\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Check field priority value\", function () {\r",
+              "    pm.expect(dataResponse.priority).to.equal(pm.iterationData.get(\"priority\"))\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Token {{session_token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/tickets/{{id_ticket}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "tickets",
+            "{{id_ticket}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete a ticket",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 204\", function () {\r",
+              "    pm.response.to.have.status(204);\r",
+              "});\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Token {{session_token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/tickets/{{id_ticket}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "tickets",
+            "{{id_ticket}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Verify ticket deleted",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 404, ticket doesn't exist\", function () {\r",
+              "    pm.response.to.have.status(404);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Token {{session_token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/tickets/{{id_ticket}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "tickets",
+            "{{id_ticket}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "titleTicket",
+      "value": ""
+    },
+    {
+      "key": "idTicket",
+      "value": ""
+    },
+    {
+      "key": "descriptionTicket",
+      "value": ""
+    }
+  ]
+}
